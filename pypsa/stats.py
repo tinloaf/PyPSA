@@ -18,8 +18,6 @@ idx = pd.IndexSlice
 # Network summary
 # =============================================================================
 
-opt_name = {"Store": "e", "Line": "s", "Transformer": "s"}
-
 
 def calculate_operational_cost(n):
     # For each component incurring marginal cost, list:
