@@ -42,7 +42,7 @@ def calculate_operational_cost(n):
         # Handle costs for components with time-constant marginal costs
         ###
         # Series, indexed by component name, of scalar marginal costs
-        costs = getattr(n, component_name)[cost_field]        
+        costs = getattr(n, component_name)[cost_field]
         # DataFrame. X Axis: Unit / Y Axis: Time. Contains costs per unit at each time step
         full_costs = amounts.mul(costs)
         cost_per_unit = full_costs.sum()
@@ -55,7 +55,7 @@ def calculate_operational_cost(n):
         time_full_costs = time_costs.mul(amounts)
         time_cost_per_unit = time_full_costs.sum()
         this_driver_cost += time_cost_per_unit.sum()
-        
+
         marginal_cost_per_driver[f"{component_name}__{amount_field}"] = this_driver_cost
         total_marginal_cost += this_driver_cost
 
