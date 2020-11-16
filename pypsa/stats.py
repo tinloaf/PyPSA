@@ -38,14 +38,24 @@ def calculate_operational_cost(n):
         # Filter out negative values (e.g., charging a storage unit)
         amounts[amounts < 0] = 0
 
-        # TODO According to the docs, marginal costs may be series. Are these then in *_t?
-        costs = getattr(n, component_name)[cost_field]
-
+        ###
+        # Handle costs for components with time-constant marginal costs
+        ###
+        # Series, indexed by component name, of scalar marginal costs
+        costs = getattr(n, component_name)[cost_field]        
         # DataFrame. X Axis: Unit / Y Axis: Time. Contains costs per unit at each time step
         full_costs = amounts.mul(costs)
-
         cost_per_unit = full_costs.sum()
         this_driver_cost = cost_per_unit.sum()
+
+        ##
+        # Handle costs for components with time-varying marginal costs
+        ##
+        time_costs = getattr(n, f"{component_name}_t")[amount_field]
+        time_full_costs = time_costs.mul(amounts)
+        time_cost_per_unit = time_full_costs.sum()
+        this_driver_cost += time_cost_per_unit.sum()
+        
         marginal_cost_per_driver[f"{component_name}__{amount_field}"] = this_driver_cost
         total_marginal_cost += this_driver_cost
 
